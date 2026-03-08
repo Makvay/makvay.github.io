@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makvay | Backend Developer</title>
+
+    <!-- Фавиконки для всех устройств -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    
+    <!-- Дополнительно для Android -->
+    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
+    <style>
+        /* Подключение шрифта Unquiet Spirits */
+        @font-face {
+            font-family: 'Unquiet Spirits';
+            src: url('UnquietSpirits.otf.otf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* Сброс стилей */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Основные стили с шрифтом Unquiet Spirits */
+        body {
+            background-color: #000000;
+            font-family: 'Unquiet Spirits', 'Arial', 'Helvetica', sans-serif;
+            color: #8b0000;
+            line-height: 1.6;
+        }
+
+        /* Контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Навигация */
+        .nav {
+            background-color: #000000;
+            padding: 20px 0;
+            border-bottom: 1px solid #8b0000;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Логотип с фото */
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #8b0000;
+            transition: all 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.1);
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: #8b0000;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .nav-link:hover {
+            color: #ff0000;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Секции */
+        .section {
+            min-height: 100vh;
+            display: none;
+            padding: 80px 0;
+            border-bottom: 2px solid #8b0000;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Главная секция */
+        #home {
+            display: block;
+        }
+
+        .home-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+
+        .photo-container {
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .photo {
+            width: 100%;
+            height: auto;
+            border: 4px solid #8b0000;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .photo:hover {
+            border-color: #ff0000;
+            box-shadow: 0 0 40px rgba(255, 0, 0, 0.7);
+            transform: scale(1.02);
+        }
+
+        .text-container {
+            flex: 2;
+        }
+
+        /* Заголовки */
+        h1 {
+            font-size: 64px;
+            margin-bottom: 10px;
+            color: #8b0000;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+            text-shadow: 2px 2px 4px rgba(139, 0, 0, 0.3);
+        }
+
+        h2 {
+            font-size: 42px;
+            margin-bottom: 20px;
+            color: #8b0000;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            border-bottom: 2px solid #8b0000;
+            padding-bottom: 15px;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+        }
+
+        h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #8b0000;
+            letter-spacing: 2px;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+        }
+
+        /* Текст */
+        p {
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #8b0000;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+            line-height: 1.8;
+        }
+
+        /* Стек технологий */
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .tech-item {
+            background: rgba(139, 0, 0, 0.15);
+            border: 2px solid #8b0000;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            background: #8b0000;
+            color: #000000;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
+        }
+
+        /* Проекты */
+        .project {
+            border: 2px solid #8b0000;
+            padding: 30px;
+            margin-bottom: 30px;
+            background: rgba(139, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .project:hover {
+            border-color: #ff0000;
+            box-shadow: 0 0 25px rgba(255, 0, 0, 0.3);
+            transform: translateX(5px);
+        }
+
+        .project h3 {
+            margin-top: 0;
+            font-size: 36px;
+        }
+
+        .project p {
+            font-size: 18px;
+        }
+
+        .project-links {
+            margin-top: 25px;
+        }
+
+        .project-link {
+            display: inline-block;
+            color: #8b0000;
+            text-decoration: none;
+            border: 2px solid #8b0000;
+            padding: 12px 25px;
+            margin-right: 20px;
+            font-size: 18px;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            background: #8b0000;
+            color: #000000;
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Контакты */
+        .contact-info {
+            border: 2px solid #8b0000;
+            padding: 40px;
+            background: rgba(139, 0, 0, 0.05);
+        }
+
+        .contact-item {
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+        }
+
+        .contact-item strong {
+            display: inline-block;
+            width: 120px;
+            color: #ff0000;
+            font-size: 26px;
+        }
+
+        .contact-link {
+            color: #8b0000;
+            text-decoration: none;
+            border-bottom: 2px dashed #8b0000;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+            font-size: 22px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #ff0000;
+            border-bottom-color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Списки */
+        ul {
+            color: #8b0000;
+            margin-left: 30px;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+        }
+
+        li {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #8b0000;
+            font-family: 'Unquiet Spirits', 'Arial', sans-serif;
+            list-style-type: square;
+        }
+
+        li:hover {
+            color: #ff0000;
+            text-shadow: 0 0 5px rgba(255, 0, 0, 0.3);
+        }
+
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .nav .container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .nav-link {
+                font-size: 16px;
+            }
+
+            .home-content {
+                flex-direction: column;
+            }
+
+            .photo-container {
+                max-width: 280px;
+            }
+
+            h1 {
+                font-size: 42px;
+                letter-spacing: 3px;
+            }
+
+            h2 {
+                font-size: 32px;
+            }
+
+            h3 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            .contact-item {
+                font-size: 18px;
+            }
+
+            .contact-item strong {
+                width: 80px;
+                font-size: 20px;
+            }
+
+            .contact-link {
+                font-size: 18px;
+            }
+
+            .tech-item {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="nav">
+        <div class="container">
+            
+
+            <div class="nav-links">
+                <button class="nav-link" onclick="showSection('home')">Home</button>
+                <button class="nav-link" onclick="showSection('about')">About</button>
+                <button class="nav-link" onclick="showSection('projects')">Projects</button>
+                <button class="nav-link" onclick="showSection('contacts')">Contacts</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Главная секция -->
+    <section id="home" class="section active">
+        <div class="container">
+            <div class="home-content">
+                <div class="photo-container">
+                    <img src="photo_2026-03-08_09-48-01.jpg" alt="Makvay" class="photo">
+                </div>
+                <div class="text-container">
+                    <h1>Makvay</h1>
+                    <h2>Backend Developer</h2>
+                   
+                    <p>Java | Postgres | Redis | Spring Boot | Kafka</p>
+                    <p>I specialize in creating high-performance backend solutions and microservice architecture. I strive for clean code and effective architectural solutions.</p>
+                    <div class="tech-stack">
+                        <span class="tech-item">Java</span>
+                        <span class="tech-item">Spring Boot</span>
+                        <span class="tech-item">PostgreSQL</span>
+                        <span class="tech-item">Redis</span>
+                        <span class="tech-item">Kafka</span>
+                        <span class="tech-item">Docker</span>
+                        <span class="tech-item">Git</span>
+                        <span class="tech-item">Gradle</span>
+                        <span class="tech-item">Maven</span>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <!-- Секция Обо мне (обновлена с OSINT) -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2>ABOUT ME</h2>
+            <div class="content">
+                <p>Backend developer focused on Java ecosystem with expertise in OSINT investigations.</p>
+                <p>I combine traditional backend development with information security and open source intelligence techniques.</p>
+                
+                
+
+                <h3>KEY COMPETENCIES</h3>
+                <ul>
+                    <li>REST API Development</li>
+                    <li>Microservice Architecture</li>
+                    <li>Database Design (SQL/NoSQL)</li>
+                    <li>Asynchronous Communication (Kafka)</li>
+                    <li>Performance Optimization</li>
+                    <li>Security & OSINT</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция Проекты -->
+    <section id="projects" class="section">
+        <div class="container">
+            <h2>My Projects</h2>
+            
+            <div class="project">
+                <h3>Bad Task Tracker</h3>
+                <p>Task tracker for managing tasks with authorization system and database operations.</p>
+                <p><strong>Technologies:</strong> C#, ASP.NET, SQLITE</p>
+                <div class="project-links">
+                    <a href="https://www.badtasktracker.ru/auth-email.html?returnUrl=%2F" target="_blank" class="project-link">View Project</a>
+                    <a href="#" class="project-link">GitHub Code</a>
+                </div>
+            </div>
+
+            <div class="project">
+                <h3>Car Service</h3>
+                <p>Microservice application for car service. Managing appointments, clients and services with asynchronous communication via Kafka.</p>
+                <p><strong>Technologies:</strong> Java, Spring Boot, PostgreSQL, Redis, Kafka</p>
+                <p><strong>Features:</strong></p>
+                <ul>
+                    <li>Microservice architecture</li>
+                    <li>Asynchronous communication via Kafka</li>
+                    <li>Caching with Redis</li>
+                </ul>
+                <div class="project-links">
+                    <a href="#" class="project-link">GitHub Code</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция Контакты -->
+    <section id="contacts" class="section">
+        <div class="container">
+            <h2>Contacts</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <strong>Telegtam:</strong>
+                    <a href="https://t.me/makvay11" class="contact-link">Click</a>
+                </div>
+                <div class="contact-item">
+                    <strong>GitHub:</strong>
+                    <a href="https://github.com/Makvay" class="contact-link">Click</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Функция переключения секций
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            const activeSection = document.getElementById(sectionId);
+            activeSection.classList.add('active');
+            
+            window.scrollTo({
+                top: activeSection.offsetTop - 80,
+                behavior: 'smooth'
+            });
+        }
+
+        // Подсветка активной кнопки
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function() {
+                document.querySelectorAll('.nav-link').forEach(l => {
+                    l.style.textShadow = 'none';
+                    l.style.color = '#8b0000';
+                });
+                this.style.textShadow = '0 0 15px rgba(255, 0, 0, 0.8)';
+                this.style.color = '#ff0000';
+            });
+        });
+    </script>
+</body>
+</html>
